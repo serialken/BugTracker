@@ -1,0 +1,142 @@
+# app/config
+parameters:
+    security.acl.permission.map.class:  Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
+    #custom MaskBuilder
+    #sonata.admin.security.mask.builder.class:  Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder
+
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+
+    role_hierarchy: 
+        ROLE_MEDIA:
+            - ROLE_SONATA_MEDIA_ADMIN_MEDIA_LIST
+            - ROLE_SONATA_MEDIA_ADMIN_MEDIA_VIEW
+            - ROLE_SONATA_MEDIA_ADMIN_MEDIA_CREATE
+            - ROLE_SONATA_MEDIA_ADMIN_MEDIA_EDIT
+            - ROLE_SONATA_MEDIA_ADMIN_MEDIA_EXPORT
+            - ROLE_SONATA_MEDIA_ADMIN_MEDIA_DELETE
+        ROLE_GALLERY:
+            - ROLE_SONATA_MEDIA_ADMIN_GALLERY_LIST
+            - ROLE_SONATA_MEDIA_ADMIN_GALLERY_VIEW
+            - ROLE_SONATA_MEDIA_ADMIN_GALLERY_CREATE
+            - ROLE_SONATA_MEDIA_ADMIN_GALLERY_EDIT
+            - ROLE_SONATA_MEDIA_ADMIN_GALLERY_EXPORT
+            - ROLE_SONATA_MEDIA_ADMIN_GALLERY_DELETE    
+        ROLE_SONATA_USER:
+           - ROLE_SONATA_ADMIN_USER_LIST
+           - ROLE_SONATA_ADMIN_USER_VIEW
+           - ROLE_SONATA_ADMIN_USER_CREATE
+           - ROLE_SONATA_ADMIN_USER_EDIT
+           - ROLE_SONATA_ADMIN_USER_EXPORT
+           - ROLE_SONATA_ADMIN_USER_DELETE
+        ROLE_SONATA_PROJECT:
+            - ROLE_SONATA_ADMIN_PROJECT_LIST
+            - ROLE_SONATA_ADMIN_PROJECT_VIEW
+            - ROLE_SONATA_ADMIN_PROJECT_CREATE
+            - ROLE_SONATA_ADMIN_PROJECT_EDIT
+            - ROLE_SONATA_ADMIN_PROJECT_EXPORT
+            - ROLE_SONATA_ADMIN_PROJECT_DELETE    
+        ROLE_SONATA_APPLICATION:
+            - ROLE_SONATA_ADMIN_APPLICATION_LIST
+            - ROLE_SONATA_ADMIN_APPLICATION_VIEW
+            - ROLE_SONATA_ADMIN_APPLICATION_CREATE
+            - ROLE_SONATA_ADMIN_APPLICATION_EDIT
+            - ROLE_SONATA_ADMIN_APPLICATION_EXPORT
+            - ROLE_SONATA_ADMIN_APPLICATION_DELETE        
+        ROLE_SONATA_PRIORITY:
+            - ROLE_SONATA_ADMIN_PRIORITY_LIST
+            - ROLE_SONATA_ADMIN_PRIORITY_VIEW
+            - ROLE_SONATA_ADMIN_PRIORITY_CREATE
+            - ROLE_SONATA_ADMIN_PRIORITY_EDIT
+            - ROLE_SONATA_ADMIN_PRIORITY_EXPORT
+            - ROLE_SONATA_ADMIN_PRIORITY_DELETE   
+        ROLE_SONATA_STATE:
+            - ROLE_SONATA_ADMIN_STATE_LIST
+            - ROLE_SONATA_ADMIN_STATE_VIEW
+            - ROLE_SONATA_ADMIN_STATE_CREATE
+            - ROLE_SONATA_ADMIN_STATE_EDIT
+            - ROLE_SONATA_ADMIN_STATE_EXPORT
+            - ROLE_SONATA_ADMIN_STATE_DELETE
+        ROLE_SONATA_WORKFLOW:
+            - ROLE_SONATA_ADMIN_WORKFLOW_LIST
+            - ROLE_SONATA_ADMIN_WORKFLOW_VIEW
+            - ROLE_SONATA_ADMIN_WORKFLOW_CREATE
+            - ROLE_SONATA_ADMIN_WORKFLOW_EDIT
+            - ROLE_SONATA_ADMIN_WORKFLOW_EXPORT
+            - ROLE_SONATA_ADMIN_WORKFLOW_DELETE
+        ROLE_SONATA_STATEWORKFLOW:
+            - ROLE_SONATA_ADMIN_STATEWORKFLOW_LIST
+            - ROLE_SONATA_ADMIN_STATEWORKFLOW_VIEW
+            - ROLE_SONATA_ADMIN_STATEWORKFLOW_CREATE
+            - ROLE_SONATA_ADMIN_STATEWORKFLOW_EDIT
+            - ROLE_SONATA_ADMIN_STATEWORKFLOW_EXPORT
+            - ROLE_SONATA_ADMIN_STATEWORKFLOW_DELETE
+        ROLE_SONATA_COMMENTS_ADMIN:
+            - ROLE_SONATA_ADMIN_COMMENTS_CREATE
+            - ROLE_SONATA_ADMIN_COMMENTS_EDIT
+        ROLE_SONATA_COMMENTS_MODERATE:
+            - ROLE_SONATA_ADMIN_COMMENTS_LIST
+            - ROLE_SONATA_ADMIN_COMMENTS_VIEW 
+            - ROLE_SONATA_ADMIN_COMMENTS_EXPORT
+            - ROLE_SONATA_ADMIN_COMMENTS_DELETE     
+        # this role (COMMENTS) is for manage the difference between a admin and a moderator which can't create or edit a comment    
+        ROLE_SONATA_COMMENTS:    [ROLE_SONATA_COMMENTS_ADMIN, ROLE_SONATA_COMMENTS_MODERATE]
+        # this role (ENTITY) contains all the role for manage the entity without the comments Role cf ROLE_COMMENTS..........
+        ROLE_ENTITY:      [ROLE_SONATA_PROJECT, ROLE_SONATA_APPLICATION, ROLE_SONATA_PRIORITY, ROLE_SONATA_STATE, ROLE_SONATA_WORKFLOW, ROLE_SONATA_STATEWORKFLOW]
+        # this role give access only to the entity neither the user or the media gallery
+        ROLE_MODERATE:    [ROLE_USER, ROLE_ENTITY, ROLE_SONATA_COMMENTS_MODERATE, ROLE_MEDIA, ROLE_GALLERY, ROLE_SONATA_USER]
+        ROLE_ADMIN:       [ROLE_MODERATE, ROLE_SONATA_COMMENTS, ROLE_SONATA_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+    # set access_strategy to unanimous, else you may have unexpected behaviors
+    access_decision_manager:
+        strategy: unanimous
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            pattern: ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_provider: form.csrf_provider
+#           logout: true
+            logout:
+                path: fos_user_security_logout
+                target: /
+            anonymous: true
+            
+    acl:
+        connection: default
+        
+    access_control:
+#        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        
+        # The WDT has to be allowed to anonymous users to avoid requiring the login with the AJAX request
+        - { path: ^/wdt/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/profiler/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        # AsseticBundle paths used when using the controller for assets
+        - { path: ^/js/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/css/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        # URL of FOSUserBundle which need to be available to anonymous users
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY } # for the case of a failed login
+        - { path: ^/user/new$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/check-confirmation-email$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/confirm/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/confirmed$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/request-reset-password$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/send-resetting-email$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/check-resetting-email$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/reset-password/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        # Secured part of the site
+        # This config requires being logged for the whole site 
+        #and having the admin role for the admin part.
+        - { path: ^/admin/, role: ROLE_MODERATE } 
+
+    

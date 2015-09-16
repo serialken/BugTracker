@@ -1,0 +1,5 @@
+# src\Serialken\BugTrackerBundle\Resources\config
+
+serialkenbugtracker_home:
+    path:       /
+    defaults:   { _controller: SerialkenBugTrackerBundle:BugTracker:home }

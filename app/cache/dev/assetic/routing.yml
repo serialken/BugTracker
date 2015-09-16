@@ -1,0 +1,5 @@
+_assetic:
+    resource: .
+    type: assetic
+_app:
+    resource: 'C:/Users/yannick.dieng/Workspace/Symfony-Bug_Tracker/app/config/routing_dev.yml'

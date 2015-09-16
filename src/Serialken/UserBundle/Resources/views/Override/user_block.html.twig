@@ -1,0 +1,15 @@
+{# src\Serialken\UserBundle\Resources\views\override #} 
+
+{% block user_block %}
+
+{% if app.user %}
+        {% if is_granted('ROLE_MODERATE') %}   
+            
+            {{ 'Welcome'|trans }} {{ app.user.username }} -  {{ 'Last login'|trans }}: {{ app.user.lastlogin|date('d/m/Y') }} - <a href="{{ url('fos_user_security_logout') }}" >
+                                                                   <span class="glyphicon glyphicon-off"></span> {{ 'Logout'|trans({}, 'SerialkenUserBundle') }}
+                                                                    
+                                                            </a>
+        {% endif %}
+{% endif %}
+    
+{% endblock %}

@@ -1,0 +1,30 @@
+{# app/Resources/Views#}
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	
+	<title>{% block tittle %}test{% endblock %}</title>
+	
+	
+  </head>
+  
+  <body>
+    
+	
+  {% block javascripts %}
+	{# je mets sa pour le moment mais je sais pas trop a quoi sa sert je verrai bien qui ne test pas ne reussi pas #}
+	 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	 <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+         <script type="text/javascript" src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+         <script type="text/javascript" src="{{ asset('js/ckeditor/adapters/jquery.js') }}"></script>
+         <script type="text/javascript">
+             $().ready(function () {
+                  $('.ckeditor').ckeditor();
+             });
+         </script>
+  {% endblock %}
+	
+  </body>
+</html>

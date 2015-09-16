@@ -1,0 +1,73 @@
+# Serialken/BugTrackerBundle/Resources/config
+
+# disable the display item => show_in_dashboard: false
+
+services:
+    sonata.admin.project:
+        class: Serialken\BugTrackerBundle\Admin\ProjectAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Tracker", label: "Project" }
+        arguments:
+            - ~
+            - Serialken\BugTrackerBundle\Entity\Project
+            - ~
+    sonata.admin.application:
+        class: Serialken\BugTrackerBundle\Admin\ApplicationAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Tracker", label: "Application" }
+        arguments:
+            - ~
+            - Serialken\BugTrackerBundle\Entity\Application
+            - ~
+        calls:
+            - [setSecurityContext, [@security.context]]
+    sonata.admin.comments:
+        class: Serialken\BugTrackerBundle\Admin\CommentsAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Tracker", label: "Comments", show_in_dashboard: true }
+        arguments:
+            - ~
+            - Serialken\BugTrackerBundle\Entity\Comments
+            - ~
+        calls:
+            - [ setSecurityContext, [@security.context]] 
+    sonata.admin.priority:
+        class: Serialken\BugTrackerBundle\Admin\PriorityAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Tracker", label: "Priority" }
+        arguments:
+            - ~
+            - Serialken\BugTrackerBundle\Entity\Priority
+            - ~
+        calls:
+            - [ setTranslationDomain, [SerialkenBugTrackerBundle]]
+    sonata.admin.workflow:
+        class: Serialken\BugTrackerBundle\Admin\WorkflowAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Tracker", label: "Workflow" }
+        arguments:
+            - ~
+            - Serialken\BugTrackerBundle\Entity\Workflow
+            - ~
+        calls:
+            - [ setTranslationDomain, [SerialkenBugTrackerBundle]]
+    sonata.admin.state:
+        class: Serialken\BugTrackerBundle\Admin\StateAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Tracker", label: "State" }
+        arguments:
+            - ~
+            - Serialken\BugTrackerBundle\Entity\State
+            - ~
+        calls:
+            - [ setTranslationDomain, [SerialkenBugTrackerBundle]]
+    sonata.admin.stateworkflow:
+        class: Serialken\BugTrackerBundle\Admin\StateWorkflowAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Tracker", label: "StateWorkflow", show_in_dashboard: true }
+        arguments:
+            - ~
+            - Serialken\BugTrackerBundle\Entity\StateWorkflow
+            - ~
+        calls:
+            - [ setTranslationDomain, [SerialkenBugTrackerBundle]]
